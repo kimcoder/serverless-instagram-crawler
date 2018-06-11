@@ -16,7 +16,7 @@ const crawling = ($event, $context, $callback, $nextCursor?: string) => {
             if (currentCount >= crawlingLimit) {
                 $callback(null, { 
                     statusCode: 200, 
-                    body: `FINISHED!! ${currentCount}/${crawlingLimit}`,
+                    body: `[Index crawling] FINISHED!! ${currentCount}/${crawlingLimit}`,
                 });
             } else {
                 if ($res.endCursor) {
@@ -25,7 +25,7 @@ const crawling = ($event, $context, $callback, $nextCursor?: string) => {
                 } else {
                     $callback(null, { 
                         statusCode: 200, 
-                        body: `SUCCESS!! ${currentCount}/${crawlingLimit}`,
+                        body: `[Index crawling] SUCCESS!! ${currentCount}/${crawlingLimit}`,
                     });
                 }
             }
@@ -45,7 +45,10 @@ const saveCrawlingData = async ($list: any[]) => {
                     resolve();
                 };
 
-                dynamoDB.isCanSaveData(data.node.id).then($res => {
+                dynamoDB.isCanSaveData(data.node.id).then(($res: any) => {
+                    if ($res.statusCode === 201) {
+                        resolve();
+                    }
                     const text: string = data.node.edge_media_to_caption.edges ? data.node.edge_media_to_caption.edges[0].node.text : "";
                     
                     dynamoDB.saveData({

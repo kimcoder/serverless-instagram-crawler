@@ -34,7 +34,7 @@ class DynamoDBManager {
                     resolve();
                 }
                 else {
-                    reject({ statusCode: 400, msg: "data is already exist", result: JSON.stringify($result.Item) });
+                    resolve({ statusCode: 201, msg: "data is already exist", result: JSON.stringify($result.Item) });
                 }
             });
         });
