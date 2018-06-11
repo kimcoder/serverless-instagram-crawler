@@ -1,0 +1,45 @@
+{
+  "name": "serverless-instagram-crawler",
+  "version": "1.0.0",
+  "description": "serverless, instagram hashtag crawler with lambda, dynamoDB",
+  "main": "dist/Index.js",
+  "scripts": {
+    "test": "node test/index.js",
+    "config": "node dist/config.js"
+  },
+  "engines": {
+    "node": ">= 6.11.5",
+    "npm": ">= 3.10.10"
+  },
+  "keywords": [
+    "instagram",
+    "hashtag",
+    "crawler",
+    "aws",
+    "dynamodb",
+    "serverless",
+    "lambda"
+  ],
+  "author": {
+    "name": "kimcoder",
+    "email": "kimcoder@me.com"
+  },
+  "license": "MIT",
+  "dependencies": {
+    "@types/aws-sdk": "^2.7.0",
+    "aws-sdk": "^2.243.1",
+    "request": "^2.87.0"
+  },
+  "devDependencies": {
+    "@types/node": "^10.1.2",
+    "@types/request": "^2.47.0",
+    "path": "^0.12.7",
+    "tslint": "^5.10.0",
+    "tslint-config-airbnb": "^5.9.2",
+    "typescript": "^2.8.3"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/kimcoder/serverless-instagram-crawler.git"
+  }
+}

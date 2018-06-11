@@ -1,0 +1,50 @@
+service: serverless-instagram-crawler
+
+frameworkVersion: ">=1.1.0 <2.0.0"
+
+provider:
+    name: aws
+    runtime: nodejs6.10
+    region: ap-northeast-2
+    stage: ${opt:stage, "dev"}
+    environment:
+        HASH_TAG: ${file(./.config.json):hashTag}
+        COUNT: ${file(./.config.json):count}
+        DYNAMODB_TABLE: ${file(./.config.json):dynamoDB}
+    iamRoleStatements:
+      - Effect: Allow
+        Action:
+          - dynamodb:Query
+          - dynamodb:Scan
+          - dynamodb:GetItem
+          - dynamodb:PutItem
+          - dynamodb:UpdateItem
+          - dynamodb:DeleteItem
+        Resource: "arn:aws:dynamodb:${self:provider.region}:*:table/${self:provider.environment.DYNAMODB_TABLE}"
+
+functions:
+    crawling:
+        handler: dist/Index.crawling
+        description: ${self:service} save data to dynamodb
+        timeout: 120
+        events:
+          - schedule: cron(0 12 * * ? *)
+
+# resources:
+#   Resources:
+    # DynamoDbTable:
+    #     Type: 'AWS::DynamoDB::Table'
+    #     DeletionPolicy: Retain
+    #     Properties:
+    #         AttributeDefinitions:
+    #             -
+    #                 AttributeName: id
+    #                 AttributeType: S
+    #         KeySchema:
+    #             -
+    #                 AttributeName: id
+    #                 KeyType: HASH
+    #         ProvisionedThroughput:
+    #             ReadCapacityUnits: 1
+    #             WriteCapacityUnits: 1
+    #         TableName: ${self:provider.environment.DYNAMODB_TABLE}    
