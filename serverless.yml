@@ -26,25 +26,25 @@ functions:
     crawling:
         handler: dist/Index.crawling
         description: ${self:service} save data to dynamodb
-        timeout: 120
+        timeout: 180
         events:
           - schedule: cron(0 12 * * ? *)
 
-# resources:
-#   Resources:
-    # DynamoDbTable:
-    #     Type: 'AWS::DynamoDB::Table'
-    #     DeletionPolicy: Retain
-    #     Properties:
-    #         AttributeDefinitions:
-    #             -
-    #                 AttributeName: id
-    #                 AttributeType: S
-    #         KeySchema:
-    #             -
-    #                 AttributeName: id
-    #                 KeyType: HASH
-    #         ProvisionedThroughput:
-    #             ReadCapacityUnits: 1
-    #             WriteCapacityUnits: 1
-    #         TableName: ${self:provider.environment.DYNAMODB_TABLE}    
+resources:
+  Resources:
+    DynamoDbTable:
+        Type: 'AWS::DynamoDB::Table'
+        DeletionPolicy: Retain
+        Properties:
+            AttributeDefinitions:
+                -
+                    AttributeName: id
+                    AttributeType: S
+            KeySchema:
+                -
+                    AttributeName: id
+                    KeyType: HASH
+            ProvisionedThroughput:
+                ReadCapacityUnits: 1
+                WriteCapacityUnits: 1
+            TableName: ${self:provider.environment.DYNAMODB_TABLE}    

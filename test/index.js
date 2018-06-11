@@ -8,11 +8,10 @@ fs.readFile(".config.json", "utf8", (err, data) => {
         process.env.HASH_TAG = JSON.parse(data).hashTag;
         process.env.COUNT = JSON.parse(data).count;
         process.env.DYNAMODB_TABLE = JSON.parse(data).dynamoDB;
-        process.env.S3_BUCKET = JSON.parse(data).s3Bucket;
         process.env.AWS_REGION = "ap-northeast-2";
 
         const test = require("../dist/index");
-        test.crawling(null, null, () => {
+        test.crawling(null, null, ($res) => {
             console.log("-- test callback function");
         });
     }

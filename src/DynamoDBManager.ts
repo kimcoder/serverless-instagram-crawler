@@ -26,22 +26,22 @@ export default class DynamoDBManager {
         });
     }
     
-    getData($id: string) {
+    isCanSaveData($id: string) { 
         return new Promise((resolve, reject) => {
             this.dynamoDb.get({
                 TableName: this.tableName,
                 Key: { id: $id },
             }, ($err, $result) => {
-                // console.log("[DynamoDBManager getData] response");
+                // console.log("[DynamoDBManager canSaveData] response");
                 // console.log($err, $result);
                 if ($err) {
                     reject($err);
                 } else if (!$result.Item) {
-                    reject({ statusCode: 400, msg: "data does not exist in dynamoDB" });
+                    resolve(); // data does not exist in dynamoDB
                 } else {
-                    resolve({ statusCode: 200, msg: "get data success", result: JSON.stringify($result.Item) });
+                    reject({ statusCode: 400, msg: "data is already exist", result: JSON.stringify($result.Item) });
                 }
             });
         });
-    }
+    } 
 }

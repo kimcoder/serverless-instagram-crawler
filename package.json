@@ -1,7 +1,7 @@
 {
   "name": "serverless-instagram-crawler",
   "version": "1.0.0",
-  "description": "serverless, instagram hashtag crawler with lambda, dynamoDB",
+  "description": "serverless( lambda, dynamoDB ) instagram hashtag crawler with typescript",
   "main": "dist/Index.js",
   "scripts": {
     "test": "node test/index.js",

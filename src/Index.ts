@@ -16,11 +16,11 @@ const crawling = ($event, $context, $callback, $nextCursor?: string) => {
             if (currentCount >= crawlingLimit) {
                 $callback(null, { 
                     statusCode: 200, 
-                    body: "FINISHED!!",
+                    body: `FINISHED!! ${currentCount}/${crawlingLimit}`,
                 });
             } else {
                 if ($res.endCursor) {
-                    console.log(`[index crawling] need more crawl, ${currentCount}/${crawlingLimit}`);
+                    console.log(`[Index crawling] need more crawl, ${currentCount}/${crawlingLimit}`);
                     crawling($event, $context, $callback, $res.endCursor);
                 } else {
                     $callback(null, { 
@@ -35,33 +35,33 @@ const crawling = ($event, $context, $callback, $nextCursor?: string) => {
 
 const saveCrawlingData = async ($list: any[]) => {
     for (const data of $list) {
-        if (currentCount >= crawlingLimit || failedCount >= failedLimit) {
-            break;
-        }
         await new Promise(resolve => {
-            if (!data.node.is_video) {
+            if (!data.node.is_video || currentCount >= crawlingLimit || failedCount >= failedLimit) {
                 resolve();
-            }
-            const text: string = data.node.edge_media_to_caption.edges ? data.node.edge_media_to_caption.edges[0].node.text : "";
-
-            dynamoDB.getData(data.node.id).then(resolve).catch($res => {
-                dynamoDB.saveData({
-                    text,
-                    id: data.node.id,
-                    feed: `https://instagram.com/p/${data.node.shortcode}`,
-                    image: data.node.display_url,
-                    likes: data.node.edge_liked_by.count,
-                    timestamp: data.node.taken_at_timestamp,
-                }).then($r => {
-                    currentCount += 1;
-                    console.log(`[index saveCrawlingData] :: ${currentCount}/${crawlingLimit}`);
-                    resolve();
-                }).catch($err => {
+            } else {
+                const errorCallBack = ($err: Error) => {
                     failedCount += 1;
-                    console.log(`[index saveCrawlingData] :: save failed`, $err);
+                    console.log(`[Index saveCrawlingData] :: save failed`, $err);
                     resolve();
-                });
-            });
+                };
+
+                dynamoDB.isCanSaveData(data.node.id).then($res => {
+                    const text: string = data.node.edge_media_to_caption.edges ? data.node.edge_media_to_caption.edges[0].node.text : "";
+                    
+                    dynamoDB.saveData({
+                        text,
+                        id: data.node.id,
+                        feed: `https://instagram.com/p/${data.node.shortcode}`,
+                        image: data.node.display_url,
+                        likes: data.node.edge_liked_by.count,
+                        timestamp: data.node.taken_at_timestamp,
+                    }).then($r => {
+                        currentCount += 1;
+                        console.log(`[Index saveCrawlingData] :: ${currentCount}/${crawlingLimit}`);
+                        resolve();
+                    }).catch(errorCallBack);
+                }).catch(errorCallBack);
+            }
         });
     }
 

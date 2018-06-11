@@ -28,9 +28,7 @@ export default class InstagramCrawler {
                 console.log("[InstagramCrawler getInstagramFeed] statusCode:", $res && $res.statusCode);
                 if ($err) {
                     reject({ statusCode: 500, msg: "get instagram feed error", error: $err });
-                } else if ($res.statusCode === 404) {
-                    reject({ statusCode: 404, msg: "get instagram feed error", error: $res });
-                } else {
+                } else if ($res.statusCode === 200) {
                     const data = JSON.parse($body);
                     const result: InstagramCrawlerResult = {
                         edges: data.graphql.hashtag.edge_hashtag_to_media.edges,
@@ -40,6 +38,8 @@ export default class InstagramCrawler {
                     }
 
                     resolve(result);
+                } else {
+                    reject({ statusCode: $res.statusCode, msg: "get instagram feed error", error: $res });
                 }
             });
         });

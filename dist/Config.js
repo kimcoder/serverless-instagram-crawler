@@ -71,16 +71,6 @@ const promptCallback = (value, q, resolve) => {
                 resolve();
             }
             break;
-        case questions[3]:
-            if (value.search(/\S/) === -1) {
-                console.log(warnings[3]);
-                rl.prompt();
-            }
-            else {
-                json.s3Bucket = value;
-                resolve();
-            }
-            break;
         default: break;
     }
 };

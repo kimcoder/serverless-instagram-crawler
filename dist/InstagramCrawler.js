@@ -20,10 +20,7 @@ class InstagramCrawler {
                 if ($err) {
                     reject({ statusCode: 500, msg: "get instagram feed error", error: $err });
                 }
-                else if ($res.statusCode === 404) {
-                    reject({ statusCode: 404, msg: "get instagram feed error", error: $res });
-                }
-                else {
+                else if ($res.statusCode === 200) {
                     const data = JSON.parse($body);
                     const result = {
                         edges: data.graphql.hashtag.edge_hashtag_to_media.edges,
@@ -32,6 +29,9 @@ class InstagramCrawler {
                         result.endCursor = data.graphql.hashtag.edge_hashtag_to_media.page_info.end_cursor;
                     }
                     resolve(result);
+                }
+                else {
+                    reject({ statusCode: $res.statusCode, msg: "get instagram feed error", error: $res });
                 }
             });
         });

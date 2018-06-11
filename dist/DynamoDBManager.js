@@ -21,7 +21,7 @@ class DynamoDBManager {
             });
         });
     }
-    getData($id) {
+    isCanSaveData($id) {
         return new Promise((resolve, reject) => {
             this.dynamoDb.get({
                 TableName: this.tableName,
@@ -31,10 +31,10 @@ class DynamoDBManager {
                     reject($err);
                 }
                 else if (!$result.Item) {
-                    reject({ statusCode: 400, msg: "data does not exist in dynamoDB" });
+                    resolve();
                 }
                 else {
-                    resolve({ statusCode: 200, msg: "get data success", result: JSON.stringify($result.Item) });
+                    reject({ statusCode: 400, msg: "data is already exist", result: JSON.stringify($result.Item) });
                 }
             });
         });
