@@ -31,7 +31,7 @@ class DynamoDBManager {
                     reject($err);
                 }
                 else if (!$result.Item) {
-                    resolve();
+                    resolve({ statusCode: 200 });
                 }
                 else {
                     resolve({ statusCode: 201, msg: "data is already exist", result: JSON.stringify($result.Item) });

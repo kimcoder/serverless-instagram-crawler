@@ -37,7 +37,7 @@ export default class DynamoDBManager {
                 if ($err) {
                     reject($err);
                 } else if (!$result.Item) {
-                    resolve(); // data does not exist in dynamoDB
+                    resolve({ statusCode: 200 }); // data does not exist in dynamoDB
                 } else {
                     resolve({ statusCode: 201, msg: "data is already exist", result: JSON.stringify($result.Item) });
                 }
