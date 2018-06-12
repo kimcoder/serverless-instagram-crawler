@@ -27,7 +27,7 @@ const questions = [
 const warnings = [
     "you did not type anything... please type hashtag",
     "you typed a incorrect value... you should type a value as number",
-    "you did not type anything... please type your DynamoDB bucket",
+    "you did not type anything... please type your DynamoDB table name",
 ];
 const configure = () => __awaiter(this, void 0, void 0, function* () {
     for (const q of questions) {

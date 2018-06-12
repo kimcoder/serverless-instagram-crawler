@@ -21,7 +21,7 @@ const questions: string[] = [
 const warnings: string[] = [
     "you did not type anything... please type hashtag",
     "you typed a incorrect value... you should type a value as number",
-    "you did not type anything... please type your DynamoDB bucket",
+    "you did not type anything... please type your DynamoDB table name",
 ];
 
 const configure = async() => {
