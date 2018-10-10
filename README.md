@@ -1,7 +1,7 @@
 # serverless-instagram-crawler
 this is instagram hashtag crawler with serverless framework.
 
-- [serverless](https://github.com/kimcoder/examples)
+- [serverless](https://github.com/serverless/serverless)
 - [nodejs](https://nodejs.org/)
 - [typescript](https://www.typescriptlang.org/)
 
